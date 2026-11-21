@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA Agencia Digital | Simulación Google Ads & Landing Page (Reto 6)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Bebas Neue (Tipografía Oficial del Manual) + Inter (Cuerpo legible) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Configuración de Tailwind con los colores exactos del Manual de Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nexora: {
+                            black: '#000000',
+                            gray: '#B3B3B3',
+                            white: '#FFFFFF',
+                            darkCard: '#0A0A0A',
+                            borderDark: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Bebas Neue"', 'sans-serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos personalizados para mantener la estética monocromática y geométrica de NEXORA */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            overflow-x: hidden;
+        }
+
+        .font-nexora-title {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.04em;
+        }
+
+        /* Animación sutil de pulso para guiar el clic en el simulador de Google */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.03); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
+
+        .ad-highlight-pulse {
+            position: relative;
+        }
+
+        .ad-highlight-pulse::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            border: 2px solid #000000;
+            animation: pulse-ring 2.5s infinite cubic-bezier(0.24, 0, 0.38, 1);
+            pointer-events: none;
+        }
+
+        /* Transición suave entre vistas */
+        .view-transition {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* Patrón de cuadrícula técnica monocromática */
+        .bg-grid-pattern {
+            background-image: radial-gradient(#B3B3B3 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-black selection:text-white">
+
+    <!-- ===================================================================== -->
+    <!-- BARRA SUPERIOR DE CONTROL DEL RETO 6 (Navegación entre Simulador y LP) -->
+    <!-- ===================================================================== -->
+    <div class="sticky top-0 z-50 bg-nexora-black text-nexora-white border-b border-neutral-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white text-black uppercase tracking-wider">
+                    Reto 6
+                </span>
+                <span class="text-xs sm:text-sm text-nexora-gray font-medium">
+                    Experiencia Post-Clic & Coherencia de Promesa
+                </span>
+            </div>
+
+            <!-- Selector de Vista Rápida -->
+            <div class="flex items-center bg-neutral-900 p-1 rounded-xl border border-neutral-800">
+                <button id="btn-view-google" onclick="switchView('google')" 
+                    class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 bg-white text-black shadow-sm flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+                    </svg>
+                    <span>1. Simulación Anuncio Google</span>
+                </button>
+                <button id="btn-view-landing" onclick="switchView('landing')" 
+                    class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 text-nexora-gray hover:text-white flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+                    </svg>
+                    <span>2. Landing Page (Post-Clic)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SECCIÓN 1: SIMULACIÓN VISUAL DEL ANUNCIO EN GOOGLE (SERP)             -->
+    <!-- ===================================================================== -->
+    <section id="google-simulator-view" class="min-h-screen bg-[#F8F9FA] py-6 sm:py-10 px-4 view-transition">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Banner Explicativo de Coherencia de Promesa -->
+            <div class="mb-6 bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 font-nexora-title text-xl">
+                        X
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide">Paso 1: Simulación de Búsqueda en Google Ads (SEM)</h2>
+                        <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
+                            Haz clic sobre el <strong>Anuncio Patrocinado de NEXORA</strong> abajo para comprobar cómo la página de destino cumple exactamente la misma promesa.
+                        </p>
+                    </div>
+                </div>
+                <button onclick="switchView('landing')" class="w-full sm:w-auto px-4 py-2 bg-black text-white text-xs font-semibold rounded-xl hover:bg-neutral-800 transition flex items-center justify-center gap-2 shrink-0 cursor-pointer">
+                    <span>Simular Clic en Anuncio</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </div>
+
+            <!-- Ventana Mockup del Navegador con Google Search -->
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+                
+                <!-- Barra de Navegador -->
+                <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex items-center gap-3">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                    </div>
+                    <div class="flex-1 bg-white rounded-full px-4 py-1.5 text-xs text-gray-500 border border-gray-200 flex items-center justify-between truncate">
+                        <div class="flex items-center gap-2 truncate">
+                            <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <span class="truncate">https://www.google.com/search?q=anuncios+para+marcas+de+ropa+y+calzado</span>
+                        </div>
+                        <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-500 hidden sm:inline">SERP Desktop/Mobile</span>
+                    </div>
+                </div>
+
+                <!-- Cabecera de Google Search -->
+                <div class="p-4 sm:p-6 border-b border-gray-100">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                        <!-- Logo Google SVG -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold tracking-tight select-none">
+                                <span class="text-[#4285F4]">G</span><span class="text-[#EA4335]">o</span><span class="text-[#FBBC05]">o</span><span class="text-[#4285F4]">g</span><span class="text-[#34A853]">l</span><span class="text-[#EA4335]">e</span>
+                            </span>
+                            <span class="md:hidden text-xs text-gray-400">Búsqueda Patrocinada</span>
+                        </div>
+
+                        <!-- Barra de Búsqueda Interactiva -->
+                        <div class="flex-1 max-w-2xl">
+                            <div class="flex items-center bg-white border border-gray-300 rounded-full px-4 py-2.5 shadow-sm hover:shadow-md transition">
+                                <input id="google-search-input" type="text" 
+                                    value="anuncios para marcas de ropa" 
+                                    class="w-full text-sm sm:text-base text-gray-800 focus:outline-none bg-transparent"
+                                    aria-label="Término de búsqueda en Google">
+                                <div class="flex items-center gap-2.5 pl-2 border-l border-gray-200 text-gray-500">
+                                    <button onclick="document.getElementById('google-search-input').value=''" title="Borrar" class="hover:text-gray-800">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                    <svg class="w-5 h-5 text-[#4285F4]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                </div>
+                            </div>
+                            <!-- Sugerencias de palabras clave enfocadas en marcas de ropa y moda -->
+                            <div class="flex flex-wrap items-center gap-1.5 mt-2.5 text-xs">
+                                <span class="text-gray-400">Palabras clave activas:</span>
+                                <button onclick="setSearchQuery('anuncios para marcas de ropa')" class="px-2.5 py-0.5 rounded-full bg-black text-white font-medium hover:bg-neutral-800 transition">anuncios para marcas de ropa</button>
+                                <button onclick="setSearchQuery('publicidad Google Ads moda y calzado')" class="px-2.5 py-0.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition">publicidad Google Ads moda y calzado</button>
+                                <button onclick="setSearchQuery('agencia marketing para marcas deportivas')" class="px-2.5 py-0.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition">agencia marketing para marcas deportivas</button>
+                                <button onclick="setSearchQuery('campañas SEM para tiendas de ropa')" class="px-2.5 py-0.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition">campañas SEM para tiendas de ropa</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestañas de Google -->
+                    <div class="flex items-center gap-6 mt-5 text-xs sm:text-sm text-gray-500 border-b border-transparent">
+                        <span class="text-[#1A73E8] font-medium border-b-2 border-[#1A73E8] pb-2 flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            Todo
+                        </span>
+                        <span class="pb-2 hover:text-gray-800 cursor-pointer">Imágenes</span>
+                        <span class="pb-2 hover:text-gray-800 cursor-pointer">Noticias</span>
+                        <span class="pb-2 hover:text-gray-800 cursor-pointer">Videos</span>
+                    </div>
+                </div>
+
+                <!-- Resultados de Búsqueda (SERP) -->
+                <div class="p-4 sm:p-8 max-w-3xl">
+                    <p class="text-xs text-gray-400 mb-5">Cerca de 1.480.000 resultados (0,32 segundos)</p>
+
+                    <!-- ========================================================= -->
+                    <!-- ANUNCIO DE GOOGLE ADS (NEXORA AGENCIA DIGITAL)            -->
+                    <!-- ========================================================= -->
+                    <div onclick="switchView('landing')" 
+                         class="ad-highlight-pulse group cursor-pointer bg-white hover:bg-gray-50/90 border-2 border-black rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-md hover:shadow-xl mb-8">
+                        
+                        <!-- Etiqueta Patrocinado + Indicador Interactivo -->
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-gray-900 tracking-tight">Patrocinado</span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-black text-white px-2.5 py-0.5 rounded-full group-hover:scale-105 transition-transform">
+                                <span>Clic para ver Landing Page</span>
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+
+                        <!-- Favicon + Nombre del Sitio + URL Visible -->
+                        <div class="flex items-center gap-3 mb-2">
+                            <!-- Isotipo X de NEXORA en círculo -->
+                            <div class="w-7 h-7 rounded-full bg-black flex items-center justify-center shrink-0">
+                                <svg class="w-4 h-4" viewBox="0 0 100 100" fill="none">
+                                    <polygon points="15,10 35,10 50,35 65,10 85,10 60,50 85,90 65,90 50,65 35,90 15,90 40,50" fill="#FFFFFF"/>
+                                </svg>
+                            </div>
+                            <div class="leading-tight">
+                                <div class="text-sm font-medium text-gray-900">NEXORA Agencia Digital</div>
+                                <div class="text-xs text-gray-600">https://www.nexoradigital.com <span class="text-gray-400">› google-ads-sem</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Título del Anuncio (Promesa Principal) -->
+                        <h3 class="text-xl sm:text-2xl font-normal text-[#1A0DAB] group-hover:underline leading-snug mb-2">
+                            NEXORA Agencia Digital | Anuncios para Marcas de Ropa, Calzado y Moda
+                        </h3>
+
+                        <!-- Descripción del Anuncio (Alineada 100% con el PDF y la Landing) -->
+                        <p class="text-sm text-[#4D5156] leading-relaxed mb-3">
+                            <strong>Transmitimos tus ideas.</strong> Especialistas en publicidad en Google Ads y SEM para marcas de ropa, accesorios y líderes como Adidas y Nike. Aumenta la visibilidad de tus colecciones y genera oportunidades reales de compra.
+                        </p>
+
+                        <!-- Extensiones de Calificación / Confianza -->
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 mb-4">
+                            <span class="flex items-center gap-1">
+                                <span class="text-amber-500">★★★★★</span>
+                                <span>4.9/5 Calificación de clientes</span>
+                            </span>
+                            <span>•</span>
+                            <span>Publicidad para Moda, Ropa & Derivados</span>
+                            <span>•</span>
+                            <span>Diagnóstico Estratégico Sin Costo</span>
+                        </div>
+
+                        <!-- Extensiones de Enlace de Sitio (Sitelinks) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-gray-200">
+                            <div class="p-2 rounded-lg hover:bg-gray-100 transition">
+                                <div class="text-sm font-medium text-[#1A0DAB] group-hover:underline">Anuncios para Marcas de Ropa</div>
+                                <p class="text-xs text-gray-600 line-clamp-1">Campañas SEM de alto impacto para indumentaria y calzado.</p>
+                            </div>
+                            <div class="p-2 rounded-lg hover:bg-gray-100 transition">
+                                <div class="text-sm font-medium text-[#1A0DAB] group-hover:underline">Palabras Clave Sector Moda</div>
+                                <p class="text-xs text-gray-600 line-clamp-1">Capturamos lo que buscan los compradores de ropa hoy.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resultado Orgánico Simulado (Contexto visual realista) -->
+                    <div class="opacity-60 pointer-events-none select-none space-y-6">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">https://ads.google.com › intl › es-419 › moda-retail</div>
+                            <div class="text-lg text-[#1A0DAB] font-normal">Google Ads para Moda y Retail - Impulsa tus ventas de ropa online</div>
+                            <p class="text-sm text-gray-600 mt-1">Atrae a los compradores adecuados en el momento exacto en que buscan prendas, tenis, accesorios y colecciones en la Búsqueda de Google.</p>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">https://www.adidas.co › rendimiento-digital</div>
+                            <div class="text-lg text-[#1A0DAB] font-normal">Estrategias de Visibilidad y Posicionamiento para Marcas de Ropa y Deporte</div>
+                            <p class="text-sm text-gray-600 mt-1">Cómo las marcas líderes como Adidas y Nike conectan con sus consumidores mediante estrategias creativas y comerciales en buscadores.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tarjeta de Validación de Coherencia (Message Match) -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-gray-200">
+                    <div class="text-xs font-bold uppercase text-gray-400 mb-1">Promesa en Anuncio</div>
+                    <p class="text-sm font-semibold text-black">"Anuncios para marcas de ropa, calzado y líderes como Adidas y Nike para generar visibilidad y ventas."</p>
+                </div>
+
+                        <!-- Extensiones de Enlace de Sitio (Sitelinks) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-gray-200">
+                            <div class="p-2 rounded-lg hover:bg-gray-100 transition">
+                                <div class="text-sm font-medium text-[#1A0DAB] group-hover:underline">Campañas SEM en Google Ads</div>
+                                <p class="text-xs text-gray-600 line-clamp-1">Mayor visibilidad y oportunidades de compra inmediatas.</p>
+                            </div>
+                            <div class="p-2 rounded-lg hover:bg-gray-100 transition">
+                                <div class="text-sm font-medium text-[#1A0DAB] group-hover:underline">Palabras Clave y Tráfico Web</div>
+                                <p class="text-xs text-gray-600 line-clamp-1">Analizamos lo que buscan tus consumidores ideales.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resultado Orgánico Simulado (Contexto visual realista) -->
+                    <div class="opacity-60 pointer-events-none select-none space-y-6">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">https://ads.google.com › intl › es-419</div>
+                            <div class="text-lg text-[#1A0DAB] font-normal">Google Ads - Consigue más clientes con publicidad online</div>
+                            <p class="text-sm text-gray-600 mt-1">Atrae a los clientes adecuados en el momento exacto en que buscan los productos o servicios que ofreces en la Búsqueda de Google.</p>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">https://www.adidas.co › rendimiento-digital</div>
+                            <div class="text-lg text-[#1A0DAB] font-normal">Estrategias de Visibilidad y Posicionamiento para Marcas Globales</div>
+                            <p class="text-sm text-gray-600 mt-1">Cómo las marcas líderes conectan con sus consumidores mediante estrategias creativas y comerciales en buscadores.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tarjeta de Validación de Coherencia (Message Match) -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-gray-200">
+                    <div class="text-xs font-bold uppercase text-gray-400 mb-1">Promesa en Anuncio</div>
+                    <p class="text-sm font-semibold text-black">"Publicidad SEM en Google Ads para conseguir visibilidad, atraer visitas y generar oportunidades de compra."</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-gray-200">
+                    <div class="text-xs font-bold uppercase text-gray-400 mb-1">Identidad Visual Manual</div>
+                    <p class="text-sm font-semibold text-black">Paleta monocromática (#000000, #B3B3B3, #FFFFFF), tipografía Bebas Neue y eslogan "Transmitimos tus ideas".</p>
+                </div>
+                <div class="bg-black text-white p-4 rounded-2xl flex items-center justify-between cursor-pointer hover:bg-neutral-900 transition" onclick="switchView('landing')">
+                    <div>
+                        <div class="text-xs font-bold uppercase text-nexora-gray mb-1">Siguiente Paso</div>
+                        <p class="text-sm font-semibold">Abrir Landing Page Post-Clic</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ===================================================================== -->
+    <!-- SECCIÓN 2: LANDING PAGE DE NEXORA AGENCIA DIGITAL (EXPERIENCIA POST-CLIC) -->
+    <!-- ===================================================================== -->
+    <main id="landing-page-view" class="hidden view-transition bg-nexora-white text-nexora-black">
+
+        <!-- 1. IDENTIDAD DE MARCA (Header & Navegación) -->
+        <header class="bg-nexora-black text-nexora-white border-b border-neutral-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+                
+                <!-- Logotipo Oficial NEXORA (Variante Negativo sobre fondo #000000 según Manual Pág. 3) -->
+                <a href="#" class="flex items-center gap-3.5 group">
+                    <!-- Isotipo X Geométrico con sombra gris #B3B3B3 fiel al manual -->
+                    <svg class="w-10 h-11 sm:w-11 sm:h-12 transition-transform duration-300 group-hover:scale-105" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sombra lateral gris #B3B3B3 -->
+                        <polygon points="10,25 48,70 10,115 10,95 36,70 10,45" fill="#B3B3B3"/>
+                        <polygon points="110,25 72,70 110,115 110,95 84,70 110,45" fill="#B3B3B3"/>
+                        <!-- Trazo principal blanco #FFFFFF -->
+                        <polygon points="10,5 30,5 60,48 90,5 110,5 110,25 74,70 110,115 110,135 90,135 60,92 30,135 10,135 10,115 46,70 10,25" fill="#FFFFFF"/>
+                    </svg>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-nexora-title text-3xl sm:text-4xl tracking-wider text-white">NEXORA</span>
+                        <span class="text-[11px] sm:text-xs tracking-[0.2em] text-nexora-gray uppercase font-light">Agencia Digital</span>
+                    </div>
+                </a>
+
+                <!-- Menú de Navegación -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-nexora-gray">
+                    <a href="#beneficios" class="hover:text-white transition">Beneficios SEM</a>
+                    <a href="#servicios" class="hover:text-white transition">Servicios</a>
+                    <a href="#confianza" class="hover:text-white transition">Casos y Confianza</a>
+                    <a href="#identidad" class="hover:text-white transition">Identidad</a>
+                </nav>
+
+                <!-- CTA Header -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openContactModal('Auditoría Google Ads')" 
+                        class="px-4 sm:px-5 py-2.5 bg-white text-black font-nexora-title text-lg tracking-wider rounded-xl hover:bg-nexora-gray transition cursor-pointer">
+                        IMPULSAR MI MARCA
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. HERO SECTION: TÍTULO, PROMESA COHERENTE E IMAGEN PRINCIPAL -->
+        <section class="relative bg-nexora-black text-nexora-white overflow-hidden py-14 sm:py-20 lg:py-24">
+            <!-- Elemento decorativo geométrico de fondo -->
+            <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+                <svg class="w-[600px] h-[600px]" viewBox="0 0 120 140" fill="none">
+                    <polygon points="10,5 30,5 60,48 90,5 110,5 110,25 74,70 110,115 110,135 90,135 60,92 30,135 10,135 10,115 46,70 10,25" stroke="#FFFFFF" stroke-width="1"/>
+                </svg>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                    
+                    <!-- Columna Izquierda: Título y Promesa exacta del Anuncio -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Badge de coherencia con el anuncio -->
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-900 border border-neutral-700 text-xs font-medium text-nexora-gray">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            <span>ANUNCIOS EN GOOGLE ADS PARA MARCAS DE ROPA, CALZADO Y DERIVADOS</span>
+                        </div>
+
+                        <!-- Eslogan Oficial -->
+                        <p class="font-nexora-title text-xl sm:text-2xl text-nexora-gray tracking-widest uppercase">
+                            “TRANSMITIMOS TUS IDEAS”
+                        </p>
+
+                        <!-- Título Principal (H1) -->
+                        <h1 class="font-nexora-title text-5xl sm:text-6xl lg:text-7xl text-white leading-[0.95] tracking-wide">
+                            IMPULSAMOS MARCAS DE ROPA Y MODA EN GOOGLE PARA GENERAR OPORTUNIDADES REALES DE COMPRA
+                        </h1>
+
+                        <!-- Subtítulo / Promesa Alineada -->
+                        <p class="text-base sm:text-lg text-nexora-gray max-w-2xl leading-relaxed font-light">
+                            En <strong class="text-white font-semibold">NEXORA Agencia Digital</strong> nos especializamos en crear publicidad de alto impacto y campañas SEM en Google Ads para referentes globales como <strong class="text-white font-semibold">Adidas, Nike</strong> y <strong class="text-white font-semibold">marcas de ropa, calzado y derivados</strong>, conectando tus colecciones con compradores listos para adquirirlas.
+                        </p>
+
+                        <!-- Título Principal (H1) -->
+                        <h1 class="font-nexora-title text-5xl sm:text-6xl lg:text-7xl text-white leading-[0.95] tracking-wide">
+                            CONSIGUE MAYOR VISIBILIDAD EN GOOGLE Y GENERA OPORTUNIDADES REALES DE COMPRA
+                        </h1>
+
+                        <!-- Subtítulo / Promesa Alineada -->
+                        <p class="text-base sm:text-lg text-nexora-gray max-w-2xl leading-relaxed font-light">
+                            En <strong class="text-white font-semibold">NEXORA Agencia Digital</strong> diseñamos campañas de anuncios pagados en Google Ads e investigación avanzada de palabras clave para conectar marcas líderes como <strong class="text-white font-semibold">Adidas</strong> con consumidores listos para comprar.
+                        </p>
+
+                        <!-- Botones de Acción (Compra / Contacto) -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                            <button onclick="openContactModal('Campaña SEM Google Ads')" 
+                                class="px-8 py-4 bg-white text-black font-nexora-title text-2xl tracking-wider rounded-xl hover:bg-nexora-gray transition-all transform hover:-translate-y-0.5 shadow-lg flex items-center justify-center gap-3 cursor-pointer">
+                                <span>SOLICITAR ESTRATEGIA GOOGLE ADS</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </button>
+                            <a href="#beneficios" 
+                               class="px-7 py-4 bg-transparent border border-nexora-gray text-white font-nexora-title text-2xl tracking-wider rounded-xl hover:bg-neutral-900 transition text-center">
+                                EXPLORAR BENEFICIOS
+                            </a>
+                        </div>
+
+                        <!-- Micro-elementos de confianza inmediatos -->
+                        <div class="pt-4 flex flex-wrap items-center gap-6 text-xs sm:text-sm text-nexora-gray border-t border-neutral-800">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Segmentación por intención de búsqueda</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Análisis de comportamiento del usuario</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Imagen Principal / Visual Estratégico -->
+                    <div class="lg:col-span-5">
+                        <div class="relative rounded-3xl overflow-hidden border border-neutral-700 bg-neutral-900 shadow-2xl">
+                            <!-- Imagen principal de alto contraste monocromático con fallback -->
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80" 
+                                 onerror="this.src='https://placehold.co/800x900/111111/FFFFFF?text=NEXORA+SEM+STRATEGY'"
+                                 alt="Análisis de rendimiento y publicidad digital NEXORA" 
+                                 class="w-full h-[380px] sm:h-[460px] object-cover grayscale contrast-125 opacity-80">
+                            
+                            <!-- Overlay de datos en tiempo real estilo Dashboard NEXORA -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
+                                <div class="bg-black/90 backdrop-blur-md border border-neutral-700 rounded-2xl p-5 space-y-4">
+                                    <div class="flex items-center justify-between border-b border-neutral-800 pb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-8 h-8 rounded-lg bg-white text-black font-nexora-title text-xl flex items-center justify-center">X</div>
+                                            <div>
+                                                <div class="text-xs text-nexora-gray uppercase">Rendimiento Campaña SEM</div>
+                                                <div class="text-sm font-bold text-white">Visibilidad & Conversión</div>
+                                            </div>
+                                        </div>
+                                        <span class="px-2.5 py-1 rounded-full bg-white text-black text-xs font-bold">+310% Tráfico</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 gap-3 text-center">
+                                        <div class="bg-neutral-900 p-2.5 rounded-xl border border-neutral-800">
+                                            <div class="font-nexora-title text-2xl text-white">TOP 1</div>
+                                            <div class="text-[11px] text-nexora-gray">Posición Google</div>
+                                        </div>
+                                        <div class="bg-neutral-900 p-2.5 rounded-xl border border-neutral-800">
+                                            <div class="font-nexora-title text-2xl text-white">98.4%</div>
+                                            <div class="text-[11px] text-nexora-gray">Relevancia SEM</div>
+                                        </div>
+                                        <div class="bg-neutral-900 p-2.5 rounded-xl border border-neutral-800">
+                                            <div class="font-nexora-title text-2xl text-white">4.8X</div>
+                                            <div class="text-[11px] text-nexora-gray">Retorno (ROAS)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DESCRIPCIÓN DE MARCA Y BENEFICIOS CLAVE -->
+        <section id="beneficios" class="py-16 sm:py-24 bg-nexora-white bg-grid-pattern">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Encabezado de Sección -->
+                    <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="inline-block px-3 py-1 rounded-full bg-black text-white text-xs font-semibold uppercase tracking-widest mb-3">
+                        Propuesta de Valor NEXORA • Moda & Retail
+                    </span>
+                    <h2 class="font-nexora-title text-4xl sm:text-5xl lg:text-6xl text-black leading-none mb-4">
+                        PUBLICIDAD ESPECIALIZADA PARA MARCAS DE ROPA, CALZADO Y ACCESORIOS
+                    </h2>
+                    <p class="text-base sm:text-lg text-neutral-600 leading-relaxed">
+                        Nexora Digital Agency es una agencia especializada en marketing digital enfocada en potenciar marcas de indumentaria, deporte y derivados (al nivel de Adidas y Nike) mediante posicionamiento en buscadores, publicidad digital y análisis del comportamiento de los compradores.
+                    </p>
+                </div>
+
+                <!-- Grid de 4 Beneficios Principales -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Beneficio 1 -->
+                    <div class="bg-white border-2 border-black rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center mb-5">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </div>
+                            <h3 class="font-nexora-title text-2xl text-black tracking-wide mb-2">VISIBILIDAD PARA TUS COLECCIONES</h3>
+                            <p class="text-sm text-neutral-600 leading-relaxed">
+                                Posicionamos tus prendas, tenis y accesorios en los primeros lugares de Google justo cuando el consumidor busca comprar moda o ropa deportiva.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 text-xs font-bold uppercase tracking-wider text-black">
+                            01 / Alcance Inmediato
+                        </div>
+                    </div>
+
+                    <!-- Beneficio 2 -->
+                    <div class="bg-white border-2 border-black rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center mb-5">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            <h3 class="font-nexora-title text-2xl text-black tracking-wide mb-2">TRÁFICO DE COMPRADORES DE MODA</h3>
+                            <p class="text-sm text-neutral-600 leading-relaxed">
+                                Analizamos las tendencias y búsquedas de ropa y derivados para atraer al público adecuado directamente hacia tu tienda online o catálogo.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 text-xs font-bold uppercase tracking-wider text-black">
+                            02 / Audiencia Precisa
+                        </div>
+                    </div>
+
+                    <!-- Beneficio 3 -->
+                    <div class="bg-white border-2 border-black rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center mb-5">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            </div>
+                            <h3 class="font-nexora-title text-2xl text-black tracking-wide mb-2">OPORTUNIDADES DE COMPRA</h3>
+                            <p class="text-sm text-neutral-600 leading-relaxed">
+                                Convertimos clics en clientes reales alineando cada anuncio con una experiencia post-clic persuasiva y orientada a resultados.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 text-xs font-bold uppercase tracking-wider text-black">
+                            03 / Conversión Directa
+                        </div>
+                    </div>
+
+                    <!-- Beneficio 4 -->
+                    <div class="bg-white border-2 border-black rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center mb-5">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            </div>
+                            <h3 class="font-nexora-title text-2xl text-black tracking-wide mb-2">ANÁLISIS DE COMPORTAMIENTO</h3>
+                            <p class="text-sm text-neutral-600 leading-relaxed">
+                                Optimizamos continuamente cada campaña basándonos en datos reales de interacción y reconocimiento de marca en el mercado.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 text-xs font-bold uppercase tracking-wider text-black">
+                            04 / Optimización Continua
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DESCRIPCIÓN DETALLADA DE SERVICIOS (Según Página 7 del Manual de Marca) -->
+        <section id="servicios" class="py-16 sm:py-24 bg-nexora-black text-nexora-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-nexora-gray">Soluciones Especializadas</span>
+                        <h2 class="font-nexora-title text-4xl sm:text-6xl text-white mt-2">
+                            SERVICIOS DE POSICIONAMIENTO Y PUBLICIDAD DIGITAL
+                        </h2>
+                    </div>
+                    <p class="text-nexora-gray max-w-md text-sm sm:text-base">
+                        Estrategias creativas y comerciales diseñadas para escalar la visibilidad de tus productos en Google.
+                    </p>
+                </div>
+
+                <!-- Tarjetas de Servicios del Manual -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Servicio Principal: Publicidad SEM en Google Ads -->
+                    <div class="bg-neutral-950 border border-neutral-800 hover:border-white rounded-3xl p-8 sm:p-10 transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="px-3.5 py-1 rounded-full bg-white text-black font-nexora-title text-lg tracking-wider">
+                                    SERVICIO ESTRELLA
+                                </span>
+                                <span class="font-nexora-title text-4xl text-nexora-gray">01</span>
+                            </div>
+                            <h3 class="font-nexora-title text-3xl sm:text-4xl text-white mb-4">
+                                PUBLICIDAD SEM EN GOOGLE ADS
+                            </h3>
+                            <p class="text-nexora-gray text-base leading-relaxed mb-6">
+                                Diseñamos campañas de anuncios pagados altamente segmentadas para conseguir mayor visibilidad inmediata, atraer visitas con alta intención de compra y generar oportunidades comerciales medibles para tu marca.
+                            </p>
+                            <ul class="space-y-3 text-sm text-white mb-8">
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Redacción persuasiva de anuncios con extensiones de alto CTR</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Diseño de experiencia post-clic coherente con la promesa</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Optimización inteligente de pujas y presupuesto publicitario</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="openContactModal('Publicidad SEM en Google Ads')" 
+                            class="w-full py-4 bg-white text-black font-nexora-title text-xl tracking-wider rounded-xl hover:bg-nexora-gray transition cursor-pointer">
+                            CONTRATAR CAMPAÑA GOOGLE ADS
+                        </button>
+                    </div>
+
+                    <!-- Servicio Complementario: Investigación de Palabras Clave y Tráfico Web -->
+                    <div class="bg-neutral-950 border border-neutral-800 hover:border-white rounded-3xl p-8 sm:p-10 transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="px-3.5 py-1 rounded-full bg-neutral-800 text-nexora-gray border border-neutral-700 font-nexora-title text-lg tracking-wider">
+                                    INTELIGENCIA DE DATOS
+                                </span>
+                                <span class="font-nexora-title text-4xl text-nexora-gray">02</span>
+                            </div>
+                            <h3 class="font-nexora-title text-3xl sm:text-4xl text-white mb-4">
+                                INVESTIGACIÓN DE PALABRAS CLAVE Y TRÁFICO WEB
+                            </h3>
+                            <p class="text-nexora-gray text-base leading-relaxed mb-6">
+                                Analizamos en profundidad lo que buscan los consumidores en internet para identificar oportunidades de mercado ocultas, capturar demanda activa y atraer al público adecuado hacia tus productos.
+                            </p>
+                            <ul class="space-y-3 text-sm text-white mb-8">
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-nexora-gray text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Mapeo de intención de búsqueda comercial y transaccional</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-nexora-gray text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Análisis competitivo de posicionamiento en buscadores</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-5 h-5 rounded-full bg-nexora-gray text-black flex items-center justify-center text-xs font-bold">✓</span>
+                                    <span>Arquitectura de tráfico web enfocada en conversión</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="openContactModal('Investigación de Palabras Clave y Tráfico Web')" 
+                            class="w-full py-4 bg-transparent border-2 border-white text-white font-nexora-title text-xl tracking-wider rounded-xl hover:bg-white hover:text-black transition cursor-pointer">
+                            SOLICITAR ESTUDIO DE PALABRAS CLAVE
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ELEMENTOS DE CONFIANZA Y CASO DE ENFOQUE ESTRATÉGICO (ADIDAS) -->
+        <section id="confianza" class="py-16 sm:py-24 bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Bloque de Enfoque con Marcas Reconocidas (Según Introducción del Manual) -->
+                <div class="bg-neutral-100 border border-neutral-300 rounded-3xl p-8 sm:p-12 mb-16">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-4">
+                            <span class="inline-block px-3 py-1 rounded-full bg-black text-white text-xs font-bold uppercase tracking-wider">
+                                Enfoque Comercial • Moda, Deporte & Retail
+                            </span>
+                            <h2 class="font-nexora-title text-4xl sm:text-5xl text-black leading-none">
+                                ESTRATEGIAS DISEÑADAS PARA MARCAS COMO ADIDAS, NIKE Y FIRMAS DE ROPA
+                            </h2>
+                            <p class="text-neutral-700 text-base leading-relaxed">
+                                Nuestro enfoque es impulsar marcas reconocidas como <strong>Adidas, Nike</strong> y empresas del sector textil, calzado y derivados, desarrollando anuncios creativos y comerciales en Google para que cada colección alcance máxima visibilidad y llegue a nuevos consumidores.
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-3">
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200">
+                                    <div class="font-nexora-title text-3xl text-black">+185%</div>
+                                    <div class="text-xs text-neutral-600">Visibilidad en búsquedas de producto</div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200">
+                                    <div class="font-nexora-title text-3xl text-black">-34%</div>
+                                    <div class="text-xs text-neutral-600">Costo por adquisición (CPA)</div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200 col-span-2 sm:col-span-1">
+                                    <div class="font-nexora-title text-3xl text-black">100%</div>
+                                    <div class="text-xs text-neutral-600">Alineación Anuncio → Landing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Visual Simulación Producto Adidas/Nike + NEXORA -->
+                        <div class="lg:col-span-5">
+                            <div class="bg-black text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                                <div class="flex items-center justify-between border-b border-neutral-800 pb-4 mb-5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-nexora-title text-2xl tracking-wider">NEXORA</span>
+                                        <span class="text-nexora-gray">×</span>
+                                        <span class="font-bold tracking-widest text-sm uppercase">ADIDAS • NIKE • MODA</span>
+                                    </div>
+                                    <span class="text-xs bg-neutral-800 px-2.5 py-1 rounded-full text-nexora-gray">Estrategia SEM</span>
+                                </div>
+                                <blockquote class="text-sm sm:text-base text-neutral-200 italic leading-relaxed mb-6">
+                                    “La coherencia entre lo que el consumidor busca en Google y lo que encuentra al hacer clic transforma el tráfico web en reconocimiento de marca y ventas reales.”
+                                </blockquote>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-white text-black font-nexora-title text-xl flex items-center justify-center">
+                                        NX
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-white">Dirección de Estrategia Digital</div>
+                                        <div class="text-xs text-nexora-gray">Nexora Digital Agency • Google Partner Focus</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonios y Sellos de Confianza -->
+                <div class="text-center mb-10">
+                    <h3 class="font-nexora-title text-3xl sm:text-4xl text-black">RESPALDO Y CONFIANZA COMPROBADA</h3>
+                    <p class="text-sm text-neutral-600 mt-1">Resultados reales basados en metodología de búsqueda e intención del usuario</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Testimonio 1 -->
+                    <div class="p-6 rounded-2xl border border-gray-200 bg-white shadow-sm">
+                        <div class="text-black font-bold text-sm mb-2">★★★★★ 5.0</div>
+                        <p class="text-sm text-neutral-700 mb-4">
+                            “Desde que implementamos campañas SEM con NEXORA, nuestras palabras clave transaccionales lideran Google y las oportunidades de compra crecieron desde el primer mes.”
+                        </p>
+                        <div class="text-xs font-bold text-black uppercase">Carlos Mendoza — Director E-Commerce</div>
+                    </div>
+
+                    <!-- Testimonio 2 -->
+                    <div class="p-6 rounded-2xl border border-gray-200 bg-white shadow-sm">
+                        <div class="text-black font-bold text-sm mb-2">★★★★★ 5.0</div>
+                        <p class="text-sm text-neutral-700 mb-4">
+                            “Su investigación de palabras clave nos permitió descubrir exactamente cómo buscan nuestros clientes. Transmiten nuestras ideas con precisión y elegancia.”
+                        </p>
+                        <div class="text-xs font-bold text-black uppercase">Laura Restrepo — Gerente de Marca</div>
+                    </div>
+
+                    <!-- Testimonio 3 -->
+                    <div class="p-6 rounded-2xl border border-gray-200 bg-white shadow-sm">
+                        <div class="text-black font-bold text-sm mb-2">★★★★★ 4.9</div>
+                        <p class="text-sm text-neutral-700 mb-4">
+                            “La experiencia post-clic que diseñaron aumentó nuestra tasa de conversión al mantener exactamente la misma promesa del anuncio en Google Ads.”
+                        </p>
+                        <div class="text-xs font-bold text-black uppercase">Andrés Villamizar — Líder de Crecimiento</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. IDENTIDAD DE MARCA (Resumen Visual del Manual de Marca) -->
+        <section id="identidad" class="py-14 bg-neutral-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-neutral-500">Manual de Identidad Aplicado</span>
+                        <h3 class="font-nexora-title text-3xl text-black mt-1">SISTEMA VISUAL NEXORA AGENCIA DIGITAL</h3>
+                        <p class="text-sm text-neutral-600 mt-1">
+                            Tipografía principal: <strong>Bebas Neue</strong> • Eslogan: <strong>"Transmitimos tus ideas"</strong>
+                        </p>
+                    </div>
+
+                    <!-- Paleta de Colores Oficial del Manual (Pág. 5) -->
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-sm">
+                            <span class="w-6 h-6 rounded-full bg-[#000000] border border-gray-300"></span>
+                            <div class="text-xs">
+                                <div class="font-bold text-black">Negro Puro</div>
+                                <div class="text-neutral-500 font-mono">#000000</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-sm">
+                            <span class="w-6 h-6 rounded-full bg-[#B3B3B3] border border-gray-300"></span>
+                            <div class="text-xs">
+                                <div class="font-bold text-black">Gris Neutro</div>
+                                <div class="text-neutral-500 font-mono">#B3B3B3</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-sm">
+                            <span class="w-6 h-6 rounded-full bg-[#FFFFFF] border border-gray-300"></span>
+                            <div class="text-xs">
+                                <div class="font-bold text-black">Blanco Puro</div>
+                                <div class="text-neutral-500 font-mono">#FFFFFF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. SECCIÓN FINAL DE CONVERSIÓN (CTA PRINCIPAL) -->
+        <section class="py-16 sm:py-24 bg-nexora-black text-nexora-white text-center px-4">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Logotipo en versión negativo -->
+                <div class="inline-flex flex-col items-center">
+                    <svg class="w-14 h-16 mb-2" viewBox="0 0 120 140" fill="none">
+                        <polygon points="10,25 48,70 10,115 10,95 36,70 10,45" fill="#B3B3B3"/>
+                        <polygon points="110,25 72,70 110,115 110,95 84,70 110,45" fill="#B3B3B3"/>
+                        <polygon points="10,5 30,5 60,48 90,5 110,5 110,25 74,70 110,115 110,135 90,135 60,92 30,135 10,135 10,115 46,70 10,25" fill="#FFFFFF"/>
+                    </svg>
+                    <span class="font-nexora-title text-3xl tracking-widest">NEXORA</span>
+                </div>
+
+                <h2 class="font-nexora-title text-4xl sm:text-6xl lg:text-7xl text-white leading-none">
+                    ¿LISTO PARA QUE TU MARCA DOMINE GOOGLE?
+                </h2>
+                <p class="text-nexora-gray text-base sm:text-lg max-w-2xl mx-auto">
+                    Transmitimos tus ideas en campañas de publicidad SEM de alto impacto. Agenda hoy tu diagnóstico de palabras clave y oportunidades de compra.
+                </p>
+
+                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="openContactModal('Cotización Campaña Google Ads')" 
+                        class="w-full sm:w-auto px-10 py-4 bg-white text-black font-nexora-title text-2xl tracking-wider rounded-xl hover:bg-nexora-gray transition transform hover:-translate-y-0.5 shadow-xl cursor-pointer">
+                        CONTACTAR A NEXORA AHORA
+                    </button>
+                    <button onclick="switchView('google')" 
+                        class="w-full sm:w-auto px-8 py-4 bg-neutral-900 border border-neutral-700 text-nexora-gray hover:text-white font-nexora-title text-2xl tracking-wider rounded-xl transition cursor-pointer">
+                        ← VOLVER AL ANUNCIO DE GOOGLE
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-nexora-gray border-t border-neutral-900 py-8 px-4 text-xs">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <strong class="text-white">NEXORA Agencia Digital</strong> — "Transmitimos tus ideas"
+                </div>
+                <div>
+                    Reto 6: Simulación Google Ads & Experiencia Post-Clic • Todos los derechos reservados
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL INTERACTIVO DE CONTACTO / COMPRA DE SERVICIO (Sin alert())      -->
+    <!-- ===================================================================== -->
+    <div id="contact-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="bg-white text-black w-full max-w-lg rounded-3xl border-2 border-black shadow-2xl overflow-hidden animate-fadeIn">
+            
+            <!-- Cabecera del Modal -->
+            <div class="bg-black text-white px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-white text-black font-nexora-title text-xl flex items-center justify-center">X</div>
+                    <div>
+                        <h3 class="font-nexora-title text-2xl tracking-wider leading-none">INICIA TU CAMPAÑA CON NEXORA</h3>
+                        <p class="text-xs text-nexora-gray mt-0.5">Transmitimos tus ideas en resultados medibles</p>
+                    </div>
+                </div>
+                <button onclick="closeContactModal()" class="text-nexora-gray hover:text-white p-1 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Formulario de Contacto -->
+            <form id="nexora-lead-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Servicio de Interés</label>
+                    <select id="service-select" class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-neutral-50 text-sm font-medium focus:outline-none focus:border-black">
+                        <option value="Campaña SEM Google Ads">Publicidad SEM en Google Ads (Visibilidad y Ventas)</option>
+                        <option value="Investigación de Palabras Clave y Tráfico Web">Investigación de Palabras Clave y Tráfico Web</option>
+                        <option value="Estrategia Integral de Marca">Estrategia Integral para Marca / Producto</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Nombre Completo *</label>
+                        <input type="text" required placeholder="Ej. Camila Torres" 
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-black">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Empresa o Marca de Ropa / Moda *</label>
+                        <input type="text" required placeholder="Ej. Adidas, Nike o Mi Marca de Ropa" 
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-black">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Correo Corporativo *</label>
+                    <input type="email" required placeholder="nombre@empresa.com" 
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-black">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">Objetivo Principal en Google</label>
+                    <textarea rows="2" placeholder="Cuéntanos qué producto deseas posicionar en Google Ads..." 
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:border-black"></textarea>
+                </div>
+
+                <button type="submit" 
+                    class="w-full py-4 bg-black text-white font-nexora-title text-2xl tracking-wider rounded-xl hover:bg-neutral-800 transition shadow-lg cursor-pointer">
+                    SOLICITAR DIAGNÓSTICO ESTRATÉGICO
+                </button>
+            </form>
+
+            <!-- Mensaje de Confirmación (Oculto inicialmente) -->
+            <div id="form-success-state" class="hidden p-8 text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-black text-white mx-auto flex items-center justify-center">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h4 class="font-nexora-title text-3xl text-black">¡SOLICITUD RECIBIDA CON ÉXITO!</h4>
+                <p class="text-sm text-neutral-600 max-w-sm mx-auto">
+                    Un especialista en <strong>Google Ads & SEM de NEXORA Agencia Digital</strong> analizará tus palabras clave y te contactará en menos de 24 horas.
+                </p>
+                <button onclick="closeContactModal()" 
+                    class="px-8 py-3 bg-black text-white font-nexora-title text-xl tracking-wider rounded-xl hover:bg-neutral-800 transition cursor-pointer">
+                    VOLVER A LA PÁGINA
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SCRIPTS DE INTERACTIVIDAD                                             -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * Cambia entre la vista de Simulación de Google Ads y la Landing Page Post-Clic
+         * @param {string} viewName - 'google' o 'landing'
+         */
+        function switchView(viewName) {
+            const googleView = document.getElementById('google-simulator-view');
+            const landingView = document.getElementById('landing-page-view');
+            const btnGoogle = document.getElementById('btn-view-google');
+            const btnLanding = document.getElementById('btn-view-landing');
+
+            if (viewName === 'google') {
+                googleView.classList.remove('hidden');
+                landingView.classList.add('hidden');
+
+                btnGoogle.classList.add('bg-white', 'text-black', 'shadow-sm');
+                btnGoogle.classList.remove('text-nexora-gray');
+
+                btnLanding.classList.remove('bg-white', 'text-black', 'shadow-sm');
+                btnLanding.classList.add('text-nexora-gray');
+            } else {
+                googleView.classList.add('hidden');
+                landingView.classList.remove('hidden');
+
+                btnLanding.classList.add('bg-white', 'text-black', 'shadow-sm');
+                btnLanding.classList.remove('text-nexora-gray');
+
+                btnGoogle.classList.remove('bg-white', 'text-black', 'shadow-sm');
+                btnGoogle.classList.add('text-nexora-gray');
+            }
+
+            // Desplazar suavemente al inicio de la pantalla
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * Actualiza el texto de búsqueda en el simulador de Google
+         */
+        function setSearchQuery(query) {
+            const input = document.getElementById('google-search-input');
+            if (input) {
+                input.value = query;
+            }
+        }
+
+        /**
+         * Abre el modal de contacto / contratación preseleccionando el servicio
+         */
+        function openContactModal(selectedService) {
+            const modal = document.getElementById('contact-modal');
+            const form = document.getElementById('nexora-lead-form');
+            const successState = document.getElementById('form-success-state');
+            const select = document.getElementById('service-select');
+
+            // Reiniciar estado del formulario
+            form.classList.remove('hidden');
+            successState.classList.add('hidden');
+
+            if (selectedService && select) {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value.includes(selectedService) || selectedService.includes(select.options[i].value)) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        /**
+         * Cierra el modal de contacto
+         */
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        /**
+         * Maneja el envío del formulario mostrando confirmación visual sin usar alert()
+         */
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('nexora-lead-form');
+            const successState = document.getElementById('form-success-state');
+
+            form.classList.add('hidden');
+            successState.classList.remove('hidden');
+        }
+
+        // Cerrar modal al hacer clic fuera de la caja
+        document.getElementById('contact-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+    </script>
+</body>
+</html>
